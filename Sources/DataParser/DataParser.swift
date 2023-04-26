@@ -18,4 +18,8 @@ public class DataParser {
   public func processData() -> String? {
     return parser.processData()
   }
+  
+  public var remainingData: String? {
+    parser.remainingData()
+  }
 }

@@ -9,6 +9,7 @@
 - (void)setEndString:(NSString *)end;
 - (void)appendData:(NSString *)data;
 - (NSString *)processData;
+- (NSString *)remainingData;
 - (void)dealloc;
 
 @end

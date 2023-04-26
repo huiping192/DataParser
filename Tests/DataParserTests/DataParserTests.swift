@@ -46,4 +46,25 @@ final class DataParserTests: XCTestCase {
     let result = parser.processData()
     XCTAssertEqual(result, longData)
   }
+  
+  func testRemainingData() {
+    let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
+    
+    parser.appendData("Some random data\n")
+    XCTAssertNil(parser.processData())
+    XCTAssertEqual(parser.remainingData, "Some random data\n")
+    
+    
+    parser.appendData("\t{\"key\":\"value\"}\nMore random data")
+    let firstResult = parser.processData()
+    XCTAssertEqual(firstResult, "\"key\":\"value\"")
+    XCTAssertEqual(parser.remainingData, "More random data")
+    
+    
+    parser.appendData("\t{\"key2\":\"value2\"}\n")
+    let secondResult = parser.processData()
+    XCTAssertEqual(secondResult, "\"key2\":\"value2\"")
+    
+    XCTAssertNil(parser.processData())
+  }
 }

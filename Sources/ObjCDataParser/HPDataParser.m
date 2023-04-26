@@ -46,4 +46,14 @@
     return nil;
 }
 
+- (NSString *)remainingData {
+    char *remaining_data = get_remaining_data(_cDataParser);
+    if (remaining_data) {
+        NSString *result = [NSString stringWithUTF8String:remaining_data];
+        free(remaining_data);
+        return result;
+    }
+    return nil;
+}
+
 @end

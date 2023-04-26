@@ -80,13 +80,23 @@ char *process_data(DataParser *parser) {
   strncpy(output, start_ptr + strlen(parser->start_string), output_length);
   output[output_length] = '\0';
   
-  // Remove the processed data from the buffer
-  size_t remaining_length = parser->data_length - (end_ptr + strlen(parser->end_string) - parser->buffer);
-  memmove(start_ptr, end_ptr + strlen(parser->end_string), remaining_length);
-  parser->data_length -= (output_length + strlen(parser->start_string) + strlen(parser->end_string));
+  // Remove the processed data from the buffer, including the end_string
+  size_t removed_length = (end_ptr + strlen(parser->end_string)) - parser->buffer;
+  size_t remaining_length = parser->data_length - removed_length;
+
+  memmove(parser->buffer, end_ptr + strlen(parser->end_string), remaining_length);
+  parser->data_length = remaining_length;
   parser->buffer[parser->data_length] = '\0';
   
   return output;
+}
+
+// Add a new function to return the remaining data in the buffer
+char *get_remaining_data(DataParser *parser) {
+  char *remaining_data = (char *)malloc(parser->data_length + 1);
+  strncpy(remaining_data, parser->buffer, parser->data_length);
+  remaining_data[parser->data_length] = '\0';
+  return remaining_data;
 }
 
 // Free the memory allocated for the DataParser instance

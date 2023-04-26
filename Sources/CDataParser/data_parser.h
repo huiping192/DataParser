@@ -19,6 +19,7 @@ void set_start_string(DataParser *parser, const char *start);
 void set_end_string(DataParser *parser, const char *end);
 void append_data(DataParser *parser, const char *data);
 char *process_data(DataParser *parser);
+char *get_remaining_data(DataParser *parser);
 void free_data_parser(DataParser *parser);
 
 #endif // DATA_PARSER_H
