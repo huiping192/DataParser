@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+// Create a new DataParser instance and allocate memory for it
 DataParser *create_data_parser() {
   DataParser *parser = (DataParser *) malloc(sizeof(DataParser));
   parser->buffer = NULL;
@@ -16,6 +16,7 @@ DataParser *create_data_parser() {
   return parser;
 }
 
+// Set the buffer size for the DataParser instance
 void set_buffer_size(DataParser *parser, size_t size) {
   if (parser->buffer != NULL) {
     free(parser->buffer);
@@ -25,6 +26,7 @@ void set_buffer_size(DataParser *parser, size_t size) {
   parser->data_length = 0;
 }
 
+// Set the start string for the DataParser instance
 void set_start_string(DataParser *parser, const char *start) {
   if (parser->start_string != NULL) {
     free(parser->start_string);
@@ -32,6 +34,7 @@ void set_start_string(DataParser *parser, const char *start) {
   parser->start_string = strdup(start);
 }
 
+// Set the end string for the DataParser instance
 void set_end_string(DataParser *parser, const char *end) {
   if (parser->end_string != NULL) {
     free(parser->end_string);
@@ -39,9 +42,11 @@ void set_end_string(DataParser *parser, const char *end) {
   parser->end_string = strdup(end);
 }
 
+// Append data to the DataParser instance's buffer
 void append_data(DataParser *handler, const char *data) {
   size_t data_length = strlen(data);
   
+  // Resize the buffer if needed
   while (handler->data_length + data_length + 1 > handler->buffer_size) {
     handler->buffer_size *= 2;
     handler->buffer = (char *)realloc(handler->buffer, handler->buffer_size);
@@ -51,11 +56,13 @@ void append_data(DataParser *handler, const char *data) {
     }
   }
   
+  // Copy the data to the buffer
   memcpy(handler->buffer + handler->data_length, data, data_length);
   handler->data_length += data_length;
   handler->buffer[handler->data_length] = '\0';
 }
 
+// Process the data in the DataParser instance's buffer
 char *process_data(DataParser *parser) {
   char *start_ptr = strstr(parser->buffer, parser->start_string);
   if (!start_ptr) {
@@ -67,11 +74,13 @@ char *process_data(DataParser *parser) {
     return NULL;
   }
   
+  // Extract the data between the start and end strings
   size_t output_length = end_ptr - (start_ptr + strlen(parser->start_string));
   char *output = (char *)malloc(output_length + 1);
   strncpy(output, start_ptr + strlen(parser->start_string), output_length);
   output[output_length] = '\0';
   
+  // Remove the processed data from the buffer
   size_t remaining_length = parser->data_length - (end_ptr + strlen(parser->end_string) - parser->buffer);
   memmove(start_ptr, end_ptr + strlen(parser->end_string), remaining_length);
   parser->data_length -= (output_length + strlen(parser->start_string) + strlen(parser->end_string));
@@ -80,6 +89,7 @@ char *process_data(DataParser *parser) {
   return output;
 }
 
+// Free the memory allocated for the DataParser instance
 void free_data_parser(DataParser *parser) {
   if (parser->buffer != NULL) {
     free(parser->buffer);

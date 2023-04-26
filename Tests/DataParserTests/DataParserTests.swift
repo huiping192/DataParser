@@ -3,10 +3,7 @@ import XCTest
 
 final class DataParserTests: XCTestCase {
   func testSimpleDataParsing() {
-    let parser = DataParser()
-    parser.setBufferSize(2048)
-    parser.setStartString("\t{")
-    parser.setEndString("}\n")
+    let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
     
     parser.appendData("Some random data\n")
     parser.appendData("\t{\"key\":\"value\"}\nMore random data")
@@ -22,14 +19,11 @@ final class DataParserTests: XCTestCase {
   }
   
   func testSimpleDataParsing2() {
-    let parser = DataParser()
-    parser.setBufferSize(2048)
-    parser.setStartString("\t{")
-    parser.setEndString("}\n")
+    let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
     
     parser.appendData("Some random data\n\t")
     XCTAssertNil(parser.processData())
-
+    
     parser.appendData("{\"key\":\"value\"}\nMore random data")
     
     let firstResult = parser.processData()
@@ -44,10 +38,7 @@ final class DataParserTests: XCTestCase {
   }
   
   func testBufferExpansion() {
-    let parser = DataParser()
-    parser.setBufferSize(32)
-    parser.setStartString("\t{")
-    parser.setEndString("}\n")
+    let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 32)
     
     let longData = String(repeating: "x", count: 64)
     parser.appendData("\t{\(longData)}\n")

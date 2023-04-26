@@ -34,13 +34,8 @@ targets: [
 ```swift
 import DataParser
 
-// Create a DataParser instance
-let parser = DataParser()
-
-// Configure the parser
-parser.setBufferSize(2048)
-parser.setStartString("\t{")
-parser.setEndString("}\n")
+// Create a DataParser instance with the desired start and end delimiters and buffer size
+let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
 
 // Append data to the parser
 parser.appendData("Some random data\n")
