@@ -53,7 +53,8 @@ For more examples and test cases, check out the DataParserTests file.
 
 Contributions are welcome! Please submit a pull request or create an issue to discuss any changes or improvements you'd like to make.
 
-##License
+## License
+
 DataParser is released under the MIT License. See the LICENSE file for more information.
 
 
