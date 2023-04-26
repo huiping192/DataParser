@@ -1,0 +1,26 @@
+name: Swift
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Swift dependencies
+      run: swift package resolve
+
+    - name: Build
+      run: swift build --configuration release
+
+    - name: Test
+      run: swift test
