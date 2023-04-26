@@ -15,7 +15,7 @@ Add the DataParser package to your project using Swift Package Manager. In your 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/huiping192/DataParser.git", from: "0.0.1"),
+    .package(url: "https://github.com/huiping192/DataParser.git", from: "0.0.2"),
 ]
 ```
 
