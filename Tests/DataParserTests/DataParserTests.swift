@@ -21,6 +21,28 @@ final class DataParserTests: XCTestCase {
     XCTAssertNil(parser.processData())
   }
   
+  func testSimpleDataParsing2() {
+    let parser = DataParser()
+    parser.setBufferSize(2048)
+    parser.setStartString("\t{")
+    parser.setEndString("}\n")
+    
+    parser.appendData("Some random data\n\t")
+    XCTAssertNil(parser.processData())
+
+    parser.appendData("{\"key\":\"value\"}\nMore random data")
+    
+    let firstResult = parser.processData()
+    XCTAssertEqual(firstResult, "\"key\":\"value\"")
+    
+    parser.appendData("\t{\"key2\":\"value2\"}\n")
+    
+    let secondResult = parser.processData()
+    XCTAssertEqual(secondResult, "\"key2\":\"value2\"")
+    
+    XCTAssertNil(parser.processData())
+  }
+  
   func testBufferExpansion() {
     let parser = DataParser()
     parser.setBufferSize(32)

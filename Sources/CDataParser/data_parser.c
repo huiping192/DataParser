@@ -57,27 +57,27 @@ void append_data(DataParser *handler, const char *data) {
 }
 
 char *process_data(DataParser *parser) {
-    char *start_ptr = strstr(parser->buffer, parser->start_string);
-    if (!start_ptr) {
-        return NULL;
-    }
-    
-    char *end_ptr = strstr(start_ptr + strlen(parser->start_string), parser->end_string);
-    if (!end_ptr) {
-        return NULL;
-    }
-
-    size_t output_length = end_ptr - (start_ptr + strlen(parser->start_string));
-    char *output = (char *)malloc(output_length + 1);
-    strncpy(output, start_ptr + strlen(parser->start_string), output_length);
-    output[output_length] = '\0';
-
-    size_t remaining_length = parser->data_length - (end_ptr + strlen(parser->end_string) - parser->buffer);
-    memmove(start_ptr, end_ptr + strlen(parser->end_string), remaining_length);
-    parser->data_length -= (output_length + strlen(parser->start_string) + strlen(parser->end_string));
-    parser->buffer[parser->data_length] = '\0';
-
-    return output;
+  char *start_ptr = strstr(parser->buffer, parser->start_string);
+  if (!start_ptr) {
+    return NULL;
+  }
+  
+  char *end_ptr = strstr(start_ptr + strlen(parser->start_string), parser->end_string);
+  if (!end_ptr) {
+    return NULL;
+  }
+  
+  size_t output_length = end_ptr - (start_ptr + strlen(parser->start_string));
+  char *output = (char *)malloc(output_length + 1);
+  strncpy(output, start_ptr + strlen(parser->start_string), output_length);
+  output[output_length] = '\0';
+  
+  size_t remaining_length = parser->data_length - (end_ptr + strlen(parser->end_string) - parser->buffer);
+  memmove(start_ptr, end_ptr + strlen(parser->end_string), remaining_length);
+  parser->data_length -= (output_length + strlen(parser->start_string) + strlen(parser->end_string));
+  parser->buffer[parser->data_length] = '\0';
+  
+  return output;
 }
 
 void free_data_parser(DataParser *parser) {
