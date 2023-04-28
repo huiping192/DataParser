@@ -65,4 +65,16 @@ final class DataParserTests: XCTestCase {
     
     XCTAssertNil(parser.processData())
   }
+  
+  func testRemoveUnnecessaryData() {
+    let parser = DataParser(start: "<", end: ">", bufferSize: 2048)
+    
+    parser.appendData("abc<123>xyz".data(using: .utf8)!)
+    
+    let processedData = parser.processData()
+    XCTAssertEqual(String(data: processedData!, encoding: .utf8), "123")
+    
+    let remainingData = parser.remainingData
+    XCTAssertEqual(String(data: remainingData!, encoding: .utf8), "xyz")
+  }
 }

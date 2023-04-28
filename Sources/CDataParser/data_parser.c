@@ -80,11 +80,11 @@ char *process_data(DataParser *parser) {
   strncpy(output, start_ptr + strlen(parser->start_string), output_length);
   output[output_length] = '\0';
   
-  // Remove the processed data from the buffer, including the start_string and the end_string
-  size_t removed_length = (end_ptr + strlen(parser->end_string)) - start_ptr;
+  // Remove the processed data from the buffer, including the end_string and unnecessary data before the start_string
+  size_t removed_length = (end_ptr + strlen(parser->end_string)) - parser->buffer;
   size_t remaining_length = parser->data_length - removed_length;
-
-  memmove(start_ptr, end_ptr + strlen(parser->end_string), remaining_length);
+  
+  memmove(parser->buffer, end_ptr + strlen(parser->end_string), remaining_length);
   parser->data_length = remaining_length;
   parser->buffer[parser->data_length] = '\0';
   
