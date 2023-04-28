@@ -15,17 +15,11 @@ public class DataParser {
     parser.append(data)
   }
   
-  public func processData() -> String? {
-    guard let processedData = parser.processData() else {
-      return nil
-    }
-    return String(data: processedData, encoding: .utf8)
+  public func processData() -> Data? {
+    return parser.processData()
   }
   
-  public var remainingData: String? {
-    guard let remainingData = parser.remainingData() else {
-      return nil
-    }
-    return String(data: remainingData, encoding: .utf8)
+  public var remainingData: Data? {
+    parser.remainingData()
   }
 }

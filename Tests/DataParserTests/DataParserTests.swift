@@ -10,10 +10,10 @@ final class DataParserTests: XCTestCase {
     parser.appendData("\t{\"key2\":\"value2\"}\n".data(using: .utf8)!)
     
     let firstResult = parser.processData()
-    XCTAssertEqual(firstResult, "\"key\":\"value\"")
+    XCTAssertEqual(String(data: firstResult!, encoding: .utf8), "\"key\":\"value\"")
     
     let secondResult = parser.processData()
-    XCTAssertEqual(secondResult, "\"key2\":\"value2\"")
+    XCTAssertEqual(String(data: secondResult!, encoding: .utf8), "\"key2\":\"value2\"")
     
     XCTAssertNil(parser.processData())
   }
@@ -27,12 +27,12 @@ final class DataParserTests: XCTestCase {
     parser.appendData("{\"key\":\"value\"}\nMore random data".data(using: .utf8)!)
     
     let firstResult = parser.processData()
-    XCTAssertEqual(firstResult, "\"key\":\"value\"")
+    XCTAssertEqual(String(data: firstResult!, encoding: .utf8), "\"key\":\"value\"")
     
     parser.appendData("\t{\"key2\":\"value2\"}\n".data(using: .utf8)!)
     
     let secondResult = parser.processData()
-    XCTAssertEqual(secondResult, "\"key2\":\"value2\"")
+    XCTAssertEqual(String(data: secondResult!, encoding: .utf8), "\"key2\":\"value2\"")
     
     XCTAssertNil(parser.processData())
   }
@@ -44,7 +44,7 @@ final class DataParserTests: XCTestCase {
     parser.appendData("\t{\(longData)}\n".data(using: .utf8)!)
     
     let result = parser.processData()
-    XCTAssertEqual(result, longData)
+    XCTAssertEqual(String(data: result!, encoding: .utf8), longData)
   }
   
   func testRemainingData() {
@@ -52,18 +52,16 @@ final class DataParserTests: XCTestCase {
     
     parser.appendData("Some random data\n".data(using: .utf8)!)
     XCTAssertNil(parser.processData())
-    XCTAssertEqual(parser.remainingData, "Some random data\n")
-    
+    XCTAssertEqual(String(data: parser.remainingData!, encoding: .utf8), "Some random data\n")
     
     parser.appendData("\t{\"key\":\"value\"}\nMore random data".data(using: .utf8)!)
     let firstResult = parser.processData()
-    XCTAssertEqual(firstResult, "\"key\":\"value\"")
-    XCTAssertEqual(parser.remainingData, "More random data")
-    
+    XCTAssertEqual(String(data: firstResult!, encoding: .utf8), "\"key\":\"value\"")
+    XCTAssertEqual(String(data: parser.remainingData!, encoding: .utf8), "More random data")
     
     parser.appendData("\t{\"key2\":\"value2\"}\n".data(using: .utf8)!)
     let secondResult = parser.processData()
-    XCTAssertEqual(secondResult, "\"key2\":\"value2\"")
+    XCTAssertEqual(String(data: secondResult!, encoding: .utf8), "\"key2\":\"value2\"")
     
     XCTAssertNil(parser.processData())
   }

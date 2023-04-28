@@ -16,16 +16,14 @@ class DataParserSwift {
     buffer.append(data)
   }
   
-  func processData() -> String? {
+  func processData() -> Data? {
     if let startRange = buffer.range(of: startString.data(using: .utf8)!),
        let endRange = buffer[startRange.upperBound...].range(of: endString.data(using: .utf8)!) {
       
       let outputData = buffer.subdata(in: startRange.upperBound..<endRange.lowerBound)
       
-      if let output = String(data: outputData, encoding: .utf8) {
-        buffer.removeSubrange(buffer.startIndex..<endRange.upperBound)
-        return output
-      }
+      buffer.removeSubrange(buffer.startIndex..<endRange.upperBound)
+      return outputData
     }
     
     return nil
