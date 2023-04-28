@@ -34,17 +34,22 @@ targets: [
 ```swift
 import DataParser
 
-// Create a DataParser instance with the desired start and end delimiters and buffer size
+// Create a parser
 let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
 
 // Append data to the parser
-parser.appendData("Some random data\n")
-parser.appendData("\t{\"key\":\"value\"}\nMore random data")
-parser.appendData("\t{\"key2\":\"value2\"}\n")
+parser.appendData("Some random data\n".data(using: .utf8)!)
+parser.appendData("\t{\"key\":\"value\"}\nMore random data".data(using: .utf8)!)
+parser.appendData("\t{\"key2\":\"value2\"}\n".data(using: .utf8)!)
 
 // Process the data
-let firstResult = parser.processData() // "\"key\":\"value\""
-let secondResult = parser.processData() // "\"key2\":\"value2\""
+if let firstDataResult = parser.processData() {
+  let firstResult = String(data: firstDataResult, encoding: .utf8) // "\"key\":\"value\""
+}
+
+if let secondDataResult = parser.processData() {
+  let secondResult = String(data: secondDataResult, encoding: .utf8) // "\"key2\":\"value2\""
+}
 ```
 
 For more examples and test cases, check out the DataParserTests file.
