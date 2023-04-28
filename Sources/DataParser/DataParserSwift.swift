@@ -22,7 +22,7 @@ class DataParserSwift {
       
       let outputData = buffer.subdata(in: startRange.upperBound..<endRange.lowerBound)
       
-      buffer.removeSubrange(buffer.startIndex..<endRange.upperBound)
+      buffer.removeSubrange(0..<endRange.upperBound)
       return outputData
     }
     
