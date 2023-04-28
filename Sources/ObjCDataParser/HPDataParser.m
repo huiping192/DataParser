@@ -24,32 +24,32 @@
     set_buffer_size(_cDataParser, size);
 }
 
-- (void)setStartString:(NSString *)start {
-    set_start_string(_cDataParser, [start UTF8String]);
+- (void)setStartString:(NSData *)start {
+    set_start_string(_cDataParser, (const char *)[start bytes]);
 }
 
-- (void)setEndString:(NSString *)end {
-    set_end_string(_cDataParser, [end UTF8String]);
+- (void)setEndString:(NSData *)end {
+    set_end_string(_cDataParser, (const char *)[end bytes]);
 }
 
-- (void)appendData:(NSString *)data {
-    append_data(_cDataParser, [data UTF8String]);
+- (void)appendData:(NSData *)data {
+    append_data(_cDataParser, (const char *)[data bytes]);
 }
 
-- (NSString *)processData {
+- (NSData *)processData {
     char *output = process_data(_cDataParser);
     if (output) {
-        NSString *result = [NSString stringWithUTF8String:output];
+        NSData *result = [NSData dataWithBytes:output length:strlen(output)];
         free(output);
         return result;
     }
     return nil;
 }
 
-- (NSString *)remainingData {
+- (NSData *)remainingData {
     char *remaining_data = get_remaining_data(_cDataParser);
     if (remaining_data) {
-        NSString *result = [NSString stringWithUTF8String:remaining_data];
+        NSData *result = [NSData dataWithBytes:remaining_data length:strlen(remaining_data)];
         free(remaining_data);
         return result;
     }

@@ -4,12 +4,14 @@
 @interface HPDataParser : NSObject
 
 - (instancetype)init;
+
 - (void)setBufferSize:(size_t)size;
-- (void)setStartString:(NSString *)start;
-- (void)setEndString:(NSString *)end;
-- (void)appendData:(NSString *)data;
-- (NSString *)processData;
-- (NSString *)remainingData;
-- (void)dealloc;
+- (void)setStartString:(NSData *)start;
+- (void)setEndString:(NSData *)end;
+
+- (void)appendData:(NSData *)data;
+
+- (NSData *)processData;
+- (NSData *)remainingData;
 
 @end
