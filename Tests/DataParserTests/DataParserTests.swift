@@ -52,6 +52,7 @@ final class DataParserTests: XCTestCase {
     
     parser.appendData("Some random data\n".data(using: .utf8)!)
     XCTAssertNil(parser.processData())
+    print("Remaining data before XCTAssertEqual: \(String(data: parser.remainingData!, encoding: .utf8)!)")
     XCTAssertEqual(String(data: parser.remainingData!, encoding: .utf8), "Some random data\n")
     
     parser.appendData("\t{\"key\":\"value\"}\nMore random data".data(using: .utf8)!)
