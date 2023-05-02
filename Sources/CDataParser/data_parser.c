@@ -47,8 +47,8 @@ void append_data(DataParser *handler, const char *data) {
   size_t data_length = strlen(data);
   
   // Resize the buffer if needed
-  while (handler->data_length + data_length + 1 > handler->buffer_size) {
-    handler->buffer_size *= 2;
+  if (handler->data_length + data_length + 1 > handler->buffer_size) {
+    handler->buffer_size = handler->data_length + data_length + 1;
     handler->buffer = (char *)realloc(handler->buffer, handler->buffer_size);
     if (!handler->buffer) {
       fprintf(stderr, "Error: Failed to resize buffer.\n");
