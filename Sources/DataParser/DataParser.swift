@@ -19,6 +19,14 @@ public class DataParser {
     return parser.processData()
   }
   
+  public func processAllData() -> [Data] {
+    var dataList: [Data] = []
+    while let data = parser.processData() {
+      dataList.append(data)
+    }
+    return dataList
+  }
+  
   public var remainingData: Data? {
     parser.remainingData()
   }

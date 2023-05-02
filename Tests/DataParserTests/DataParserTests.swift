@@ -77,4 +77,17 @@ final class DataParserTests: XCTestCase {
     let remainingData = parser.remainingData
     XCTAssertEqual(String(data: remainingData!, encoding: .utf8), "xyz")
   }
+  
+  func testProcessAllData() {
+      let parser = DataParser(start: "\t{", end: "}\n", bufferSize: 2048)
+      
+      parser.appendData("Some random data\n".data(using: .utf8)!)
+      parser.appendData("\t{\"key\":\"value\"}\nMore random data".data(using: .utf8)!)
+      parser.appendData("\t{\"key2\":\"value2\"}\n".data(using: .utf8)!)
+      
+      let results = parser.processAllData()
+      XCTAssertEqual(results.count, 2)
+      XCTAssertEqual(String(data: results[0], encoding: .utf8), "\"key\":\"value\"")
+      XCTAssertEqual(String(data: results[1], encoding: .utf8), "\"key2\":\"value2\"")
+    }
 }
